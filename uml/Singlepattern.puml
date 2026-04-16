@@ -1,0 +1,28 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+title Singleton Pattern - HeroAircraft
+
+class Game {
+  - heroAircraft: HeroAircraft
+  + action(): void
+}
+
+class HeroAircraft {
+  - {static} instance: HeroAircraft
+  - HeroAircraft(locationX: int, locationY: int, speedX: int, speedY: int, hp: int)
+  + {static} getInstance(): HeroAircraft
+  + forward(): void
+}
+
+Game ..> HeroAircraft : getInstance()
+HeroAircraft --> HeroAircraft : hold unique instance
+
+note right of HeroAircraft
+  Pattern Name: Singleton
+  1) Constructor is private.
+  2) Provide global access point `getInstance()`.
+  3) One unique instance in whole game.
+end note
+
+@enduml

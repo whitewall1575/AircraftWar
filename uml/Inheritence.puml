@@ -1,0 +1,85 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+title AircraftWar - Core Inheritance Diagram
+
+abstract class AbstractFlyingObject {
+  # locationX: int
+  # locationY: int
+  # speedX: int
+  # speedY: int
+  # isValid: boolean
+  + forward(): void
+  + crash(flyingObject: AbstractFlyingObject): boolean
+  + vanish(): void
+  + notValid(): boolean
+}
+
+abstract class AbstractAircraft {
+  # maxHp: int
+  # hp: int
+  # shootStrategy: ShootStrategy
+  + decreaseHp(decrease: int): void
+  + setShootStrategy(shootStrategy: ShootStrategy): void
+  + shoot(): List<BaseBullet>
+}
+
+abstract class AbstractEnemy {
+  # score: int
+  + getScore(): int
+}
+
+class HeroAircraft {
+  - {static} instance: HeroAircraft
+  + {static} getInstance(): HeroAircraft
+}
+class MobEnemy
+class EliteEnemy
+class ElitePlusEnemy
+class EliteProEnemy
+class BossEnemy
+
+abstract class AbstractProp
+class BloodProp {
+  - healAmount: int
+  + getHealAmount(): int
+}
+class FireProp
+class SuperFireProp
+class BombProp
+class FreezeProp
+
+abstract class BaseBullet {
+  - power: int
+  + getPower(): int
+}
+class HeroBullet
+class EnemyBullet
+
+interface ShootStrategy
+
+AbstractFlyingObject <|-- AbstractAircraft
+AbstractFlyingObject <|-- AbstractProp
+AbstractFlyingObject <|-- BaseBullet
+
+AbstractAircraft <|-- HeroAircraft
+AbstractAircraft <|-- AbstractEnemy
+
+AbstractEnemy <|-- MobEnemy
+AbstractEnemy <|-- EliteEnemy
+AbstractEnemy <|-- ElitePlusEnemy
+AbstractEnemy <|-- EliteProEnemy
+AbstractEnemy <|-- BossEnemy
+
+AbstractProp <|-- BloodProp
+AbstractProp <|-- FireProp
+AbstractProp <|-- SuperFireProp
+AbstractProp <|-- BombProp
+AbstractProp <|-- FreezeProp
+
+BaseBullet <|-- HeroBullet
+BaseBullet <|-- EnemyBullet
+
+AbstractAircraft --> ShootStrategy : has
+
+@enduml

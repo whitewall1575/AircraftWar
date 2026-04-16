@@ -1,0 +1,42 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+title Simple Factory Pattern - Prop Creation
+
+class Game {
+  - props: List<AbstractProp>
+  + handleEnemyDestroyed(enemy: AbstractAircraft): void
+}
+
+class PropFactory {
+  + {static} createProp(propType: String, x: int, y: int): AbstractProp
+}
+
+abstract class AbstractProp {
+  + AbstractProp(locationX: int, locationY: int, speedX: int, speedY: int)
+  + forward(): void
+}
+
+class BloodProp
+class FireProp
+class SuperFireProp
+class BombProp
+class FreezeProp
+
+Game ..> PropFactory : use
+PropFactory ..> AbstractProp : return
+
+AbstractProp <|-- BloodProp
+AbstractProp <|-- FireProp
+AbstractProp <|-- SuperFireProp
+AbstractProp <|-- BombProp
+AbstractProp <|-- FreezeProp
+
+note right of PropFactory
+  Pattern Name: Simple Factory
+  Decide concrete prop type by `propType`
+  and encapsulate all `new` operations.
+end note
+
+@enduml
+

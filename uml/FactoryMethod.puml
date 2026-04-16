@@ -1,0 +1,58 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+title Factory Method Pattern - Enemy Creation
+
+class Game {
+  - enemyAircrafts: List<AbstractAircraft>
+  + action(): void
+}
+
+interface EnemyFactory {
+  + createEnemy(): AbstractEnemy
+}
+
+class MobFactory
+class EliteFactory
+class ElitePlusFactory
+class EliteProFactory
+class BossFactory
+
+abstract class AbstractEnemy {
+  # score: int
+  + getScore(): int
+}
+
+class MobEnemy
+class EliteEnemy
+class ElitePlusEnemy
+class EliteProEnemy
+class BossEnemy
+
+Game ..> EnemyFactory : choose/use
+EnemyFactory <|.. MobFactory
+EnemyFactory <|.. EliteFactory
+EnemyFactory <|.. ElitePlusFactory
+EnemyFactory <|.. EliteProFactory
+EnemyFactory <|.. BossFactory
+
+AbstractEnemy <|-- MobEnemy
+AbstractEnemy <|-- EliteEnemy
+AbstractEnemy <|-- ElitePlusEnemy
+AbstractEnemy <|-- EliteProEnemy
+AbstractEnemy <|-- BossEnemy
+
+MobFactory ..> MobEnemy : createEnemy()
+EliteFactory ..> EliteEnemy : createEnemy()
+ElitePlusFactory ..> ElitePlusEnemy : createEnemy()
+EliteProFactory ..> EliteProEnemy : createEnemy()
+BossFactory ..> BossEnemy : createEnemy()
+
+note right of EnemyFactory
+  Pattern Name: Factory Method
+  Each concrete factory creates
+  one concrete enemy product.
+end note
+
+@enduml
+

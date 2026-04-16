@@ -1,0 +1,49 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+title AircraftWar - Strategy Pattern (Shoot)
+
+package "edu.hitsz.strategy" {
+  interface ShootStrategy {
+    +shoot(aircraft: AbstractAircraft): List<BaseBullet>
+  }
+
+  class StraightShootStrategy
+  class ScatterShootStrategy
+  class CircleShootStrategy
+
+  ShootStrategy <|.. StraightShootStrategy
+  ShootStrategy <|.. ScatterShootStrategy
+  ShootStrategy <|.. CircleShootStrategy
+}
+
+package "edu.hitsz.aircraft" {
+  abstract class AbstractAircraft {
+    -shootStrategy: ShootStrategy
+    +setShootStrategy(shootStrategy: ShootStrategy)
+    +shoot(): List<BaseBullet>
+  }
+
+  class HeroAircraft
+  class EliteEnemy
+  class ElitePlusEnemy
+  class EliteProEnemy
+  class BossEnemy
+
+  AbstractAircraft <|-- HeroAircraft
+  AbstractAircraft <|-- EliteEnemy
+  AbstractAircraft <|-- ElitePlusEnemy
+  AbstractAircraft <|-- EliteProEnemy
+  AbstractAircraft <|-- BossEnemy
+}
+
+AbstractAircraft --> ShootStrategy : use
+
+note right of AbstractAircraft
+  Pattern Name: Strategy
+  Shooting algorithms are encapsulated as strategies
+  and can be switched at runtime.
+end note
+
+@enduml
+
