@@ -7,10 +7,13 @@ import edu.hitsz.enemyfactory.*;
 import edu.hitsz.prop.*;
 import edu.hitsz.strategy.CircleShootStrategy;
 import edu.hitsz.strategy.ScatterShootStrategy;
+import edu.hitsz.leaderboard.dao.FileScoreRecordDao;
+import edu.hitsz.leaderboard.service.LeaderboardService;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
 import java.util.Timer;
@@ -57,6 +60,10 @@ public class Game extends JPanel {
 
     //游戏结束标志
     private boolean gameOverFlag = false;
+
+    private static final String DEFAULT_PLAYER_NAME = "PLAYER";
+    private final LeaderboardService leaderboardService = new LeaderboardService(new FileScoreRecordDao());
+    private boolean leaderboardRecorded = false;
 
     public Game() {
         heroAircraft = HeroAircraft.getInstance();
@@ -345,7 +352,17 @@ public class Game extends JPanel {
             timer.cancel(); // 取消定时器并终止所有调度任务
             gameOverFlag = true;
             System.out.println("Game Over!");
+            recordAndPrintLeaderboardOnce();
         }
+    }
+
+    private void recordAndPrintLeaderboardOnce() {
+        if (leaderboardRecorded) {
+            return;
+        }
+        leaderboardRecorded = true;
+        leaderboardService.addRecord(DEFAULT_PLAYER_NAME, this.score, LocalDateTime.now());
+        leaderboardService.printLeaderboard();
     }
 
     //***********************
