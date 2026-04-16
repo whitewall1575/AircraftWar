@@ -1,0 +1,59 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+title AircraftWar - DAO Pattern (Leaderboard Persistence)
+
+package "edu.hitsz.leaderboard.model" {
+  class ScoreRecord {
+    - playerName: String
+    - score: int
+    - recordTime: LocalDateTime
+    + getPlayerName(): String
+    + getScore(): int
+    + getRecordTime(): LocalDateTime
+  }
+}
+
+package "edu.hitsz.leaderboard.dao" {
+  interface ScoreRecordDao {
+    + getAll(): List<ScoreRecord>
+    + insert(record: ScoreRecord): void
+  }
+
+  class FileScoreRecordDao {
+    - filePath: Path
+    + getAll(): List<ScoreRecord>
+    + insert(record: ScoreRecord): void
+  }
+
+  ScoreRecordDao <|.. FileScoreRecordDao
+}
+
+package "edu.hitsz.leaderboard.service" {
+  class LeaderboardService {
+    - scoreRecordDao: ScoreRecordDao
+    + addRecord(playerName: String, score: int, time: LocalDateTime): void
+    + getSortedRecords(): List<ScoreRecord>
+    + printLeaderboard(): void
+  }
+}
+
+package "edu.hitsz.application" {
+  class Game {
+    - score: int
+    - leaderboardService: LeaderboardService
+    + checkResultAction(): void
+  }
+}
+
+LeaderboardService --> ScoreRecordDao : use
+LeaderboardService ..> ScoreRecord : create/sort
+Game --> LeaderboardService : use
+
+note right of ScoreRecordDao
+  Pattern Name: DAO
+  Separate data access logic from
+  game business logic for leaderboard persistence.
+end note
+
+@enduml
