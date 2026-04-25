@@ -64,4 +64,19 @@ class LeaderboardServiceTest {
         assertTrue(printed.contains("600"));
         assertTrue(printed.contains("2026-04-16 10:30:00"));
     }
+
+    @Test
+    void shouldDeleteRecordFromLeaderboard() {
+        FileScoreRecordDao dao = new FileScoreRecordDao(tempFile.toString());
+        LeaderboardService service = new LeaderboardService(dao);
+        service.addRecord("P1", 300, LocalDateTime.of(2026, 4, 16, 9, 0));
+        service.addRecord("P2", 1200, LocalDateTime.of(2026, 4, 16, 9, 1));
+
+        ScoreRecord recordToDelete = service.getSortedRecords().get(1);
+        service.deleteRecord(recordToDelete);
+
+        List<ScoreRecord> records = service.getSortedRecords();
+        assertEquals(1, records.size());
+        assertEquals("P2", records.get(0).getPlayerName());
+    }
 }

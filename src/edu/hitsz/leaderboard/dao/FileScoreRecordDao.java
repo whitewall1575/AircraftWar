@@ -59,6 +59,22 @@ public class FileScoreRecordDao implements ScoreRecordDao {
         }
     }
 
+    @Override
+    public void delete(ScoreRecord record) {
+        ensureFileExists();
+        List<ScoreRecord> records = getAll();
+        boolean removed = false;
+        List<ScoreRecord> remainingRecords = new ArrayList<>();
+        for (ScoreRecord currentRecord : records) {
+            if (!removed && sameRecord(currentRecord, record)) {
+                removed = true;
+                continue;
+            }
+            remainingRecords.add(currentRecord);
+        }
+        writeAll(remainingRecords);
+    }
+
     private void ensureFileExists() {
         try {
             Path parent = filePath.getParent();
@@ -86,5 +102,22 @@ public class FileScoreRecordDao implements ScoreRecordDao {
 
     private String formatLine(ScoreRecord record) {
         return record.getPlayerName() + "," + record.getScore() + "," + record.getRecordTime().format(STORAGE_FORMATTER);
+    }
+
+    private void writeAll(List<ScoreRecord> records) {
+        try (BufferedWriter writer = Files.newBufferedWriter(filePath, StandardCharsets.UTF_8)) {
+            for (ScoreRecord record : records) {
+                writer.write(formatLine(record));
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to rewrite leaderboard file: " + filePath, e);
+        }
+    }
+
+    private boolean sameRecord(ScoreRecord first, ScoreRecord second) {
+        return first.getPlayerName().equals(second.getPlayerName())
+                && first.getScore() == second.getScore()
+                && first.getRecordTime().equals(second.getRecordTime());
     }
 }

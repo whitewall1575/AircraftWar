@@ -22,6 +22,10 @@ public class LeaderboardService {
         scoreRecordDao.insert(new ScoreRecord(playerName, score, time));
     }
 
+    public void deleteRecord(ScoreRecord record) {
+        scoreRecordDao.delete(record);
+    }
+
     public List<ScoreRecord> getSortedRecords() {
         List<ScoreRecord> records = new ArrayList<>(scoreRecordDao.getAll());
         records.sort(Comparator.comparingInt(ScoreRecord::getScore).reversed()

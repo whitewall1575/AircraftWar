@@ -25,6 +25,7 @@ public class ImageManager {
      * 可使用 CLASSNAME_IMAGE_MAP.get( obj.getClass().getName() ) 获得 obj 所属基类对应的图片
      */
     private static final Map<String, BufferedImage> CLASSNAME_IMAGE_MAP = new HashMap<>();
+    private static final Map<Difficulty, BufferedImage> DIFFICULTY_BACKGROUND_IMAGE_MAP = new HashMap<>();
 
     public static BufferedImage BACKGROUND_IMAGE;
     public static BufferedImage HERO_IMAGE;
@@ -46,6 +47,10 @@ public class ImageManager {
         try {
 
             BACKGROUND_IMAGE = ImageIO.read(new FileInputStream("src/images/bg.jpg"));
+            for (Difficulty difficulty : Difficulty.values()) {
+                DIFFICULTY_BACKGROUND_IMAGE_MAP.put(difficulty,
+                        ImageIO.read(new FileInputStream(difficulty.getBackgroundImagePath())));
+            }
 
             HERO_IMAGE = ImageIO.read(new FileInputStream("src/images/hero.png"));
             MOB_ENEMY_IMAGE = ImageIO.read(new FileInputStream("src/images/mob.png"));
@@ -92,6 +97,10 @@ public class ImageManager {
             return null;
         }
         return get(obj.getClass().getName());
+    }
+
+    public static BufferedImage getBackgroundImage(Difficulty difficulty) {
+        return DIFFICULTY_BACKGROUND_IMAGE_MAP.get(difficulty);
     }
 
 }

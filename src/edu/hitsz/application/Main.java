@@ -26,9 +26,16 @@ public class Main {
                 WINDOW_WIDTH, WINDOW_HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        Game game = new Game();
-        frame.add(game);
+        StartMenu startMenu = new StartMenu(difficulty -> startGame(frame, difficulty));
+        frame.setContentPane(startMenu.getMainPanel());
         frame.setVisible(true);
+    }
+
+    private static void startGame(JFrame frame, Difficulty difficulty) {
+        Game game = new Game(difficulty);
+        frame.setContentPane(game);
+        frame.revalidate();
+        frame.repaint();
         game.action();
     }
 }

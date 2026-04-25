@@ -8,4 +8,6 @@ public interface ScoreRecordDao {
     List<ScoreRecord> getAll();
 
     void insert(ScoreRecord record);
+
+    void delete(ScoreRecord record);
 }
