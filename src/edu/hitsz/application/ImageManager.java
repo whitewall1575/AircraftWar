@@ -12,6 +12,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 综合管理图片的加载，访问
@@ -19,6 +21,7 @@ import java.util.Map;
  * @author hitsz
  */
 public class ImageManager {
+    private static final Logger LOGGER = Logger.getLogger(ImageManager.class.getName());
 
     /**
      * 类名-图片 映射，存储各基类的图片 <br>
@@ -83,7 +86,7 @@ public class ImageManager {
             CLASSNAME_IMAGE_MAP.put(FreezeProp.class.getName(), FREEZE_PROP_IMAGE);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Failed to load image resources.", e);
             System.exit(-1);
         }
     }

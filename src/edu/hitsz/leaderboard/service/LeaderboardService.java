@@ -33,6 +33,7 @@ public class LeaderboardService {
         return records;
     }
 
+    @SuppressWarnings("unused")
     public void printLeaderboard() {
         List<ScoreRecord> records = getSortedRecords();
         System.out.println("=== Leaderboard (NORMAL) ===");

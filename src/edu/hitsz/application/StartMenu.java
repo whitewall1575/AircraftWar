@@ -10,6 +10,7 @@ public class StartMenu {
     private JButton easyButton;
     private JPanel mainPanel;
 
+    @SuppressWarnings("unused")
     public StartMenu() {
         this(difficulty -> {
         });
@@ -26,6 +27,7 @@ public class StartMenu {
         return mainPanel;
     }
 
+    @SuppressWarnings("BoundFieldAssignment")
     private void createFallbackComponentsIfNeeded() {
         if (mainPanel != null) {
             return;
@@ -40,9 +42,5 @@ public class StartMenu {
         mainPanel.add(easyButton);
         mainPanel.add(normalButton);
         mainPanel.add(hardButton);
-    }
-
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
     }
 }

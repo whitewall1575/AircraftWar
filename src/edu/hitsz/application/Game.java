@@ -24,14 +24,13 @@ import java.util.List;
  * @author hitsz
  */
 public class Game extends JPanel {
+    private static final int TIME_INTERVAL = 40;
 
     private int backGroundTop = 0;
     private final BufferedImage backgroundImage;
 
     //调度器, 用于定时任务调度
     private final GameTimer timer;
-    //时间间隔(ms)，控制刷新频率
-    private final int timeInterval = 40;
 
     private final HeroAircraft heroAircraft;
     private final List<AbstractAircraft> enemyAircrafts;
@@ -71,6 +70,7 @@ public class Game extends JPanel {
     private final AudioManager audioManager;
     private final Runnable gameOverRecorder;
 
+    @SuppressWarnings("unused")
     public Game() {
         this(Difficulty.NORMAL);
     }
@@ -97,7 +97,7 @@ public class Game extends JPanel {
         //启动英雄机鼠标监听
         new HeroController(this, heroAircraft);
 
-        this.timer = new GameTimer(timeInterval);
+        this.timer = new GameTimer(TIME_INTERVAL);
 
     }
 
